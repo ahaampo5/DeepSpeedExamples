@@ -6,14 +6,14 @@
 OUTPUT=$1
 ZERO_STAGE=$2
 if [ "$OUTPUT" = "" ]; then
-    OUTPUT=./output_step1_llama2_7b
+    OUTPUT=./output_step1_qwen3_0.6b
 fi
 if [ "$ZERO_STAGE" = "" ]; then
     ZERO_STAGE=3
 fi
 mkdir -p $OUTPUT
 
-deepspeed --hostfile=hostfile main.py \
+deepspeed --hostfile=hostfile --num_nodes 2 main.py \
    --data_path Dahoas/rm-static Dahoas/full-hh-rlhf Dahoas/synthetic-instruct-gptj-pairwise yitingxie/rlhf-reward-datasets \
    --data_split 2,4,4 \
    --model_name_or_path Qwen/Qwen3-0.6B \
