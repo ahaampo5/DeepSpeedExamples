@@ -3,13 +3,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # DeepSpeed Team
+export NCCL_DEBUG=WARN
+export NCCL_DEBUG_SUBSYS=ALL
+
 OUTPUT=$1
 ZERO_STAGE=$2
 if [ "$OUTPUT" = "" ]; then
     OUTPUT=./output_step1_qwen3_32b
 fi
 if [ "$ZERO_STAGE" = "" ]; then
-    ZERO_STAGE=3
+    ZERO_STAGE=0
 fi
 mkdir -p $OUTPUT
 
@@ -17,9 +20,9 @@ deepspeed --hostfile=hostfile --num_nodes 2 main.py \
    --data_path Dahoas/rm-static Dahoas/full-hh-rlhf Dahoas/synthetic-instruct-gptj-pairwise yitingxie/rlhf-reward-datasets \
    --data_split 2,4,4 \
    --model_name_or_path Qwen/Qwen3-32B \
-   --per_device_train_batch_size 4 \
-   --per_device_eval_batch_size 4 \
-   --max_seq_len 512 \
+   --per_device_train_batch_size 1 \
+   --per_device_eval_batch_size 1 \
+   --max_seq_len 1024 \
    --learning_rate 9.65e-6 \
    --weight_decay 0. \
    --num_train_epochs 4  \

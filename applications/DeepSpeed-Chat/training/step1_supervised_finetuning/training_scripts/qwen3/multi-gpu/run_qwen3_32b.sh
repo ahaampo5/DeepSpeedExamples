@@ -16,10 +16,10 @@ mkdir -p $OUTPUT
 deepspeed main.py \
    --data_path Dahoas/rm-static Dahoas/full-hh-rlhf Dahoas/synthetic-instruct-gptj-pairwise yitingxie/rlhf-reward-datasets \
    --data_split 2,4,4 \
-   --model_name_or_path Qwen/Qwen3-32B \
+   --model_name_or_path Qwen/Qwen3-0.6B \
    --per_device_train_batch_size 1 \
    --per_device_eval_batch_size 1 \
-   --max_seq_len 1024 \
+   --max_seq_len 128 \
    --learning_rate 9.65e-6 \
    --weight_decay 0. \
    --num_train_epochs 4  \
