@@ -348,7 +348,8 @@ def main():
     print_rank_0(
         f"***** Evaluating perplexity, Epoch {0}/{args.num_train_epochs} *****",
         args.global_rank)
-    perplexity, eval_loss = evaluation(model, eval_dataloader)
+    perplexity, eval_loss = 0, 0  # VRAM 확인용
+    # perplexity, eval_loss = evaluation(model, eval_dataloader)
     print_rank_0(f"ppl: {perplexity}, loss: {eval_loss}", args.global_rank)
 
     for epoch in range(args.num_train_epochs):
