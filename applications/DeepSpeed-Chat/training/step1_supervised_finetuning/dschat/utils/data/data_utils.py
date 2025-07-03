@@ -76,12 +76,38 @@ def get_raw_dataset(dataset_name, output_path, seed, local_rank):
             )
         return raw_datasets.LocalJsonFileDataset(output_path, seed, local_rank,
                                                  dataset_name, chat_path)
+    # Custom Dataset # NOTE: If you want to add your own dataset, please add it in raw_datasets_en.py.
     elif "nvidia/AceReason-1.1-SFT" in dataset_name:
         return raw_datasets_en.AceReasoningDataset(output_path, seed, local_rank, dataset_name)
     elif "FreedomIntelligence/medical-o1-reasoning-SFT" in dataset_name:
         return raw_datasets_en.MedicalReasoningDataset(output_path, seed, local_rank, dataset_name)
     elif "leetcode2k_1.3k.parquet" in dataset_name:
         return raw_datasets_en.LeetcodeDataset(output_path, seed, local_rank, dataset_name)
+    elif "livecodebench_440.parquet" in dataset_name:
+        return raw_datasets_en.LivecondebenchDataset(output_path, seed, local_rank, dataset_name)
+    elif "primeintellect_7.5k.parquet" in dataset_name:
+        return raw_datasets_en.PrimeintellectDataset(output_path, seed, local_rank, dataset_name)
+    elif "taco_8.8k.parquet" in dataset_name:
+        return raw_datasets_en.TacoDataset(output_path, seed, local_rank, dataset_name)
+    elif "humaneval_164.parquet" in dataset_name:
+        return raw_datasets_en.HumanevalDataset(output_path, seed, local_rank, dataset_name)
+    elif "mbpp_500.parquet" in dataset_name:
+        return raw_datasets_en.MbppDataset(output_path, seed, local_rank, dataset_name)
+    elif "arcagi1_111.parquet" in dataset_name:
+        return raw_datasets_en.Arcagi1Dataset(output_path, seed, local_rank, dataset_name)
+    elif "arcagi2_190.parquet" in dataset_name:
+        return raw_datasets_en.Arcagi2Dataset(output_path, seed, local_rank, dataset_name)
+    elif "barc_1.6k.parquet" in dataset_name:
+        return raw_datasets_en.BarcDataset(output_path, seed, local_rank, dataset_name)
+    elif "graph_logical_1.2k.parquet" in dataset_name:
+        return raw_datasets_en.GraphLogicalDataset(output_path, seed, local_rank,
+                                                  dataset_name)
+    elif "ordering_puzzle_1.9k.parquet" in dataset_name:
+        return raw_datasets_en.OrderingPuzzleDataset(output_path, seed,
+                                                    local_rank, dataset_name)
+    elif "zebra_puzzle_1.3k.parquet" in dataset_name:
+        return raw_datasets_en.ZebraPuzzleDataset(output_path, seed, local_rank,
+                                                 dataset_name)
     else:
         raise RuntimeError(
             f"We do not have configs for dataset {dataset_name}, but you can add it by yourself in raw_datasets.py."
