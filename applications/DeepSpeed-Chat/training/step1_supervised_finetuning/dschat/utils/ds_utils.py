@@ -71,6 +71,27 @@ def get_train_ds_config(offload,
             "enabled": enable_tensorboard,
             "output_path": f"{tb_path}/ds_tensorboard_logs/",
             "job_name": f"{tb_name}_tensorboard"
+        },
+        # "autotuning": {
+        #     "enabled": True,
+        #     "results_dir": "autotuning_results",
+        #     "exps_dir": "autotuning_exps",
+        #     "overwrite": False,
+        #     "metric": "throughput",
+        #     "start_profile_step": 3,
+        #     "end_profile_step": 5,
+        #     "fast": True,
+        #     "max_train_batch_size": None,
+        #     "mp_size": 1,
+        #     "num_tuning_micro_batch_sizes": 3,
+        #     "tuner_type": "model_based",
+        #     "tuner_early_stopping": 5,
+        #     "tuner_num_trials": 50,
+        #     "arg_mappings": None
+        # }
+        "wandb": {
+            "enabled": True,
+            "project": "foundationModel"
         }
     }
 

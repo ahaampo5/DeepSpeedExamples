@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # DeepSpeed Team
+import os
 import argparse
 import math
 
@@ -19,6 +20,7 @@ from transformers import (
 
 import deepspeed
 from deepspeed.ops.adam import DeepSpeedCPUAdam, FusedAdam
+from deepspeed import comm as dist
 from deepspeed import get_accelerator
 
 from dschat.utils.data.data_utils import create_prompt_dataset
@@ -28,6 +30,7 @@ from dschat.utils.module.lora import convert_linear_layer_to_lora, convert_lora_
 from dschat.utils.model.model_utils import create_hf_model, causal_lm_model_to_fp32_loss
 from dschat.utils.perf import print_throughput
 
+import wandb
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -219,6 +222,11 @@ def main():
         # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
         # torch.distributed.init_process_group(backend='nccl')
         deepspeed.init_distributed()
+        if dist.get_rank() == 0:
+            wandb.init(project=os.environ.get("WANDB_PROJECT"), 
+                       name=os.environ.get("WANDB_NAME"), 
+                       notes=os.environ.get("WANDB_NOTES"))
+
 
     args.global_rank = torch.distributed.get_rank()
 
@@ -312,6 +320,12 @@ def main():
             perplexity = torch.exp(losses).item()
         except OverflowError:
             perplexity = float("inf")
+        if dist.get_rank() == 0:
+            wandb.run.log({
+                    "eval_perplexity": perplexity,
+                    "eval_loss": losses.item()
+                }
+            )
         return perplexity, losses.item()
 
     # Split weights in two groups, one with weight decay and the other not.
@@ -348,8 +362,8 @@ def main():
     print_rank_0(
         f"***** Evaluating perplexity, Epoch {0}/{args.num_train_epochs} *****",
         args.global_rank)
-    perplexity, eval_loss = 0, 0  # VRAM 확인용
-    # perplexity, eval_loss = evaluation(model, eval_dataloader)
+    # perplexity, eval_loss = 0, 0  # VRAM 확인용
+    perplexity, eval_loss = evaluation(model, eval_dataloader)
     print_rank_0(f"ppl: {perplexity}, loss: {eval_loss}", args.global_rank)
 
     for epoch in range(args.num_train_epochs):
