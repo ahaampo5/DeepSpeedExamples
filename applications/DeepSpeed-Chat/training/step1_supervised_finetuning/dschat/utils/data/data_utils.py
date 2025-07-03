@@ -108,6 +108,15 @@ def get_raw_dataset(dataset_name, output_path, seed, local_rank):
     elif "zebra_puzzle_1.3k.parquet" in dataset_name:
         return raw_datasets_en.ZebraPuzzleDataset(output_path, seed, local_rank,
                                                  dataset_name)
+    elif "combined_54.4k.parquet" in dataset_name:
+        return raw_datasets_en.MathCombinedDataset(output_path, seed, local_rank,
+                                                   dataset_name)
+    elif "aime_repeated_8x_240.parquet" in dataset_name:
+        return raw_datasets_en.AimeRepeated8x240Dataset(output_path, seed,
+                                                        local_rank, dataset_name)
+    elif "math_500.parquet" in dataset_name:
+        return raw_datasets_en.Math500Dataset(output_path, seed, local_rank,
+                                              dataset_name)
     else:
         raise RuntimeError(
             f"We do not have configs for dataset {dataset_name}, but you can add it by yourself in raw_datasets.py."
