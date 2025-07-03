@@ -64,3 +64,37 @@ class MedicalReasoningDataset(PromptRawDataset):
 
     def get_prompt_and_rejected(self, sample):
         return sample["Question"] + ""
+    
+
+###################################### Reasoning 360 Datasets ######################################
+class LeetcodeDataset(PromptRawDataset):
+    """
+    Leetcode dataset for supervised fine-tuning.
+    This dataset is used for training models on coding tasks.
+    """
+
+    def __init__(self, output_path, seed, local_rank, dataset_name):
+        super().__init__(output_path, seed, local_rank, dataset_name)
+        self.dataset_name = "/root/workspace/DeepSpeedExamples/data/train/codegen__leetcode2k_1.3k.parquet"
+        self.dataset_name_clean = "codegen_leetcode2k-1.3k"
+        
+    def get_train_data(self):
+        return self.raw_datasets
+
+    def get_eval_data(self):
+        return self.raw_datasets.select(range(100))
+
+    def get_prompt(self, sample):
+        return sample["query"]
+
+    def get_chosen(self, sample):
+        return sample["response"]
+
+    def get_rejected(self, sample):
+        return ""
+
+    def get_prompt_and_chosen(self, sample):
+        return sample["query"] + sample["response"]
+
+    def get_prompt_and_rejected(self, sample):
+        return sample["query"] + ""

@@ -3,8 +3,9 @@
 
 import os
 # DeepSpeed Team
-from datasets import load_dataset, load_from_disk
+from datasets import load_dataset, load_from_disk, Dataset
 from torch.utils.data import Subset
+import pandas as pd
 import re
 
 
@@ -16,10 +17,14 @@ class PromptRawDataset(object):
         self.output_path = output_path
         self.seed = seed
         self.local_rank = local_rank
-        if os.path.exists(dataset_name):
+        if 'parquet' in dataset_name:
+            df = pd.read_parquet(dataset_name)
+            self.raw_datasets = Dataset.from_pandas(df, preserve_index=False)
+        elif os.path.exists(dataset_name):
             self.raw_datasets = load_from_disk(dataset_name)
         elif not dataset_name == 'local/jsonfile':
             self.raw_datasets = load_dataset(dataset_name)
+
 
     def get_train_data(self):
         return
