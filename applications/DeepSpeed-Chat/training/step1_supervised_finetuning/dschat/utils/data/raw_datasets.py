@@ -66,7 +66,7 @@ class DahoasRmstaticDataset(PromptRawDataset):
         self.dataset_name_clean = "Dahoas_rm_static"
 
     def get_train_data(self):
-        return self.raw_datasets["train"].select(100)
+        return self.raw_datasets["train"].select(range(0, 100))
 
     def get_eval_data(self):
         return self.raw_datasets["test"]
