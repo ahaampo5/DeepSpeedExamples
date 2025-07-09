@@ -232,6 +232,7 @@ def create_dataset_split(current_dataset, raw_dataset, train_phase, tokenizer,
             # tokenize the text
             chosen_sentence = raw_dataset.get_prompt_and_chosen(
                 tmp_data)  # the accept response
+            print(chosen_sentence)
             if chosen_sentence is not None:
                 if isinstance(chosen_sentence, str):
                     chosen_sentence += end_of_conversation_token

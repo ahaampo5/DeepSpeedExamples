@@ -24,6 +24,7 @@ class PromptRawDataset(object):
             self.raw_datasets = Dataset.from_pandas(df, preserve_index=False)
         elif api.dataset_info(dataset_name) is not None:
             # If the dataset is in HuggingFace Hub, load it from there.
+            print('HF dataset found, loading from HuggingFace Hub...')
             self.raw_datasets = load_dataset(dataset_name, subset_name) if subset_name else load_dataset(dataset_name)
         elif os.path.exists(dataset_name):
             self.raw_datasets = load_from_disk(dataset_name)
@@ -66,7 +67,7 @@ class DahoasRmstaticDataset(PromptRawDataset):
         self.dataset_name_clean = "Dahoas_rm_static"
 
     def get_train_data(self):
-        return self.raw_datasets["train"].select(range(0, 100))
+        return self.raw_datasets["train"].select(range(100))
 
     def get_eval_data(self):
         return self.raw_datasets["test"]

@@ -796,7 +796,7 @@ class HuggingFaceTB_SmoltalkDataset(PromptRawDataset):
         self.dataset_name_clean = "HuggingFaceTB_smoltalk"
         
     def get_train_data(self):
-        return self.raw_datasets['train']
+        return self.raw_datasets['train'].select(range(500))
 
     def get_eval_data(self):
         return self.raw_datasets['test'].select(range(100))

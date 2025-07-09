@@ -293,6 +293,7 @@ def main():
         args.max_seq_len,
         end_of_conversation_token=tokenizer.eos_token,
         sft_only_data_path=args.sft_only_data_path)
+    print_rank_0(f"Length: {len(train_dataset)}")
     # DataLoaders creation:
     if args.local_rank == -1:
         train_sampler = RandomSampler(train_dataset)
@@ -372,8 +373,8 @@ def main():
     print_rank_0(
         f"***** Evaluating perplexity, Epoch {0}/{args.num_train_epochs} *****",
         args.global_rank)
-    # perplexity, eval_loss = 0, 0  # VRAM 확인용
-    perplexity, eval_loss = evaluation(model, eval_dataloader)
+    perplexity, eval_loss = 0, 0  # VRAM 확인용
+    # perplexity, eval_loss = evaluation(model, eval_dataloader)
     print_rank_0(f"ppl: {perplexity}, loss: {eval_loss}", args.global_rank)
 
     for epoch in range(args.num_train_epochs):
