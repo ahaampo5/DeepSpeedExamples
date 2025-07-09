@@ -253,7 +253,7 @@ def create_dataset_split(current_dataset, raw_dataset, train_phase, tokenizer,
                                                 padding="max_length",
                                                 truncation=True,
                                                 tokenize=True,
-                                                add_generation_prompt=True,
+                                                add_generation_prompt=False,
                                                 return_attention_mask=True,
                                                 return_dict=True,
                                                 return_tensors="pt")

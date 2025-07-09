@@ -403,23 +403,23 @@ def main():
         print_rank_0(
             f"***** Evaluating perplexity, Epoch {epoch+1}/{args.num_train_epochs} *****",
             args.global_rank)
-        perplexity, eval_loss = evaluation(model, eval_dataloader)
-        print_rank_0(f"ppl: {perplexity}, loss: {eval_loss}", args.global_rank)
+        # perplexity, eval_loss = evaluation(model, eval_dataloader)
+        # print_rank_0(f"ppl: {perplexity}, loss: {eval_loss}", args.global_rank)
         model.tput_timer.update_epoch_count()
 
-    if args.output_dir is not None:
-        print_rank_0('saving the final model ...', args.global_rank)
-        model = convert_lora_to_linear_layer(model)
+    # if args.output_dir is not None:
+    #     print_rank_0('saving the final model ...', args.global_rank)
+    #     model = convert_lora_to_linear_layer(model)
 
-        if args.global_rank == 0:
-            save_hf_format(model, tokenizer, args)
+    #     if args.global_rank == 0:
+    #         save_hf_format(model, tokenizer, args)
 
-        if args.zero_stage == 3:
-            # For zero stage 3, each gpu only has a part of the model, so we need a special save function
-            save_zero_three_model(model,
-                                  args.global_rank,
-                                  args.output_dir,
-                                  zero_stage=args.zero_stage)
+    if args.zero_stage == 3:
+        # For zero stage 3, each gpu only has a part of the model, so we need a special save function
+        save_zero_three_model(model,
+                                args.global_rank,
+                                args.output_dir,
+                                zero_stage=args.zero_stage)
 
 
 if __name__ == "__main__":
