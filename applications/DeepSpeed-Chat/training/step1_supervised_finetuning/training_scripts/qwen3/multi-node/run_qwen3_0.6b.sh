@@ -9,7 +9,7 @@ export NCCL_DEBUG_SUBSYS=ALL
 export NCCL_TIMEOUT=6000
 
 BATCH_SIZE=1
-ACCUMULATION_STEPS=2
+ACCUMULATION_STEPS=1
 MAX_LENGTH=16384
 NUM_GPUS=8
 TARGET=code_logic_math_stem_table
@@ -38,7 +38,7 @@ deepspeed --hostfile=hostfile --num_nodes 2 main.py \
    --max_seq_len $MAX_LENGTH \
    --learning_rate 9.65e-6 \
    --weight_decay 0. \
-   --num_train_epochs 1  \
+   --num_train_epochs 1 \
    --gradient_accumulation_steps $ACCUMULATION_STEPS \
    --lr_scheduler_type cosine \
    --num_warmup_steps 0 \
