@@ -14,8 +14,8 @@ class AceReasoningDataset(PromptRawDataset):
     This dataset is used for training models on reasoning tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "nvidia/AceReason-1.1-SFT"
         self.dataset_name_clean = "nvidia_AceReason-1.1-SFT"
         
@@ -47,8 +47,8 @@ class MedicalReasoningDataset(PromptRawDataset):
     This dataset is used for training models on medical reasoning tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "FreedomIntelligence/medical-o1-reasoning-SFT"
         self.dataset_name_clean = "FreedomIntelligence_medical-o1-reasoning-SFT"
         
@@ -82,8 +82,8 @@ class LeetcodeDataset(PromptRawDataset): # TODO: 테스트 케이스만 있고 �
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/data/train/codegen__leetcode2k_1.3k.parquet"
         self.dataset_name_clean = "codegen_leetcode2k-1.3k"
         
@@ -115,8 +115,8 @@ class LivecondebenchDataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/codegen__livecodebench_440.parquet"
         self.dataset_name_clean = "codegen_livecodebench"
         df_test = pd.read_parquet("/root/workspace/DeepSpeedExamples/raw_data/offline_eval/codegen__livecodebench_279.parquet")
@@ -191,8 +191,8 @@ class TacoDataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/codegen__taco_8.8k.parquet"
         self.dataset_name_clean = "codegen_taco-8.8k"
         
@@ -223,8 +223,8 @@ class HumanevalDataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/offline_eval/codegen__humaneval_164.parquet"
         self.dataset_name_clean = "codegen_humaneval-1.6k"
         
@@ -256,8 +256,8 @@ class MbppDataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/offline_eval/codegen__mbpp_500.parquet"
         self.dataset_name_clean = "codegen_mbpp-500"
         
@@ -289,8 +289,8 @@ class Arcagi1Dataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/logic__arcagi1_111.parquet"
         self.dataset_name_clean = "logic_arcagi1-111"
         df_test = pd.read_parquet("/root/workspace/DeepSpeedExamples/raw_data/offline_eval/logic__arcagi1_400.parquet")
@@ -324,8 +324,8 @@ class Arcagi2Dataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/logic__arcagi2_190.parquet"
         self.dataset_name_clean = "logic_arcagi1-111"
         
@@ -357,8 +357,8 @@ class BarcDataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/logic__barc_1.6k.parquet"
         self.dataset_name_clean = "logic_barc-1.6k"
         
@@ -390,8 +390,8 @@ class GraphLogicalDataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/logic__graph_logical_1.2k.parquet"
         self.dataset_name_clean = "logic_graph_logical-1.2k"
 
@@ -423,8 +423,8 @@ class OrderingPuzzleDataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/logic__ordering_puzzle_1.9k.parquet"
         self.dataset_name_clean = "logic_ordering_puzzle-1.9k"
 
@@ -456,8 +456,8 @@ class ZebraPuzzleDataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/logic__zebra_puzzle_1.3k.parquet"
         self.dataset_name_clean = "logic_zebra_puzzle-1.3k"
         df_test = pd.read_parquet("/root/workspace/DeepSpeedExamples/raw_data/offline_eval/logic__zebra_puzzle_dataset_200.parquet")
@@ -492,8 +492,8 @@ class MathCombinedDataset(PromptRawDataset):
     This dataset is used for training models on math tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/math__combined_54.4k.parquet"
         self.dataset_name_clean = "math_math_dataset-54.4k"
 
@@ -507,13 +507,13 @@ class MathCombinedDataset(PromptRawDataset):
         return sample["prompt"][0]['content']
 
     def get_chosen(self, sample):
-        return "$$\n\\boxed{" + str([a for a in sample['reward_model']['ground_truth']]) + "}$$"
+        return "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
 
     def get_rejected(self, sample):
         return ""
 
     def get_prompt_and_chosen(self, sample):
-        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + str([a for a in sample['reward_model']['ground_truth']]) + "}$$"
+        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
 
     def get_prompt_and_rejected(self, sample):
         return sample["prompt"][0]['content'] + ""
@@ -524,8 +524,8 @@ class Math500Dataset(PromptRawDataset):
     This dataset is used for training models on math tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/offline_eval/math__math_500.parquet"
         self.dataset_name_clean = "math_math_dataset-500"
 
@@ -539,13 +539,13 @@ class Math500Dataset(PromptRawDataset):
         return sample["prompt"][0]['content']
 
     def get_chosen(self, sample):
-        return "$$\n\\boxed{" + str([a for a in sample['reward_model']['ground_truth']]) + "}$$"
+        return "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
 
     def get_rejected(self, sample):
         return ""
 
     def get_prompt_and_chosen(self, sample):
-        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + str([a for a in sample['reward_model']['ground_truth']]) + "}$$"
+        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
 
     def get_prompt_and_rejected(self, sample):
         return sample["prompt"][0]['content'] + ""
@@ -557,8 +557,8 @@ class AimeRepeated8x240Dataset(PromptRawDataset):
     This dataset is used for training models on math tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/offline_eval/math__aime_repeated_8x_240.parquet"
         self.dataset_name_clean = "math_aime-1.2k"
 
@@ -572,13 +572,13 @@ class AimeRepeated8x240Dataset(PromptRawDataset):
         return sample["prompt"][0]['content']
 
     def get_chosen(self, sample):
-        return "$$\n\\boxed{" + str([a for a in sample['reward_model']['ground_truth']]) + "}$$"
+        return "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
 
     def get_rejected(self, sample):
         return ""
 
     def get_prompt_and_chosen(self, sample):
-        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + str([a for a in sample['reward_model']['ground_truth']]) + "}$$"
+        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
 
     def get_prompt_and_rejected(self, sample):
         return sample["prompt"][0]['content'] + ""
@@ -591,8 +591,8 @@ class CodeioDataset(PromptRawDataset):
     This dataset is used for training models on coding tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/simulation__codeio_3.7k.parquet"
         self.dataset_name_clean = "codeio_codeio-3.7k"
         
@@ -606,13 +606,13 @@ class CodeioDataset(PromptRawDataset):
         return sample["prompt"][0]['content']
 
     def get_chosen(self, sample):
-        return sample["response"]
+        return # sample["response"] # NOTE: CodeIO dataset does not have answer
 
     def get_rejected(self, sample):
         return ""
 
     def get_prompt_and_chosen(self, sample):
-        return sample["prompt"][0]['content'] + sample["response"]
+        return sample["prompt"][0]['content'] # + sample["response"]
 
     def get_prompt_and_rejected(self, sample):
         return sample["query"] + ""
@@ -624,8 +624,8 @@ class WebDataset(PromptRawDataset):
     This dataset is used for training models on STEM tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/stem__web_3.6k.parquet"
         self.dataset_name_clean = "stem_web-3.6k"
         
@@ -639,17 +639,82 @@ class WebDataset(PromptRawDataset):
         return sample["prompt"][0]['content']
 
     def get_chosen(self, sample):
-        return "$$\n\\boxed{" + str([a for a in sample['reward_model']['ground_truth']]) + "}$$"
+        return "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
 
     def get_rejected(self, sample):
         return ""
 
     def get_prompt_and_chosen(self, sample):
-        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + str([a for a in sample['reward_model']['ground_truth']]) + "}$$"
+        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
+
+    def get_prompt_and_rejected(self, sample):
+        return sample["prompt"][0]['content'] + ""
+
+
+class GPQADiamondDataset(PromptRawDataset):
+    """
+    GPQA dataset for supervised fine-tuning.
+    This dataset is used for training models on STEM tasks.
+    """
+
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
+        self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/offline_eval/stem__gpqa_diamond_198.parquet"
+        self.dataset_name_clean = "stem_gpqa-1.2k"
+        
+    def get_train_data(self):
+        return self.raw_datasets.select(range(0))
+
+    def get_eval_data(self):
+        return self.raw_datasets
+
+    def get_prompt(self, sample):
+        return sample["prompt"][0]['content']
+
+    def get_chosen(self, sample):
+        return "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
+
+    def get_rejected(self, sample):
+        return ""
+
+    def get_prompt_and_chosen(self, sample):
+        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
 
     def get_prompt_and_rejected(self, sample):
         return sample["prompt"][0]['content'] + ""
     
+
+class SuperGPQADataset(PromptRawDataset):
+    """
+    Super GPQA dataset for supervised fine-tuning.
+    This dataset is used for training models on STEM tasks.
+    """
+
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
+        self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/offline_eval/stem__supergpqa_1k.parquet"
+        self.dataset_name_clean = "stem_super_gpqa-1k"
+        
+    def get_train_data(self):
+        return self.raw_datasets
+
+    def get_eval_data(self):
+        return self.raw_datasets.select(range(0))
+
+    def get_prompt(self, sample):
+        return sample["prompt"][0]['content']
+
+    def get_chosen(self, sample):
+        return "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
+
+    def get_rejected(self, sample):
+        return ""
+
+    def get_prompt_and_chosen(self, sample):
+        return sample["prompt"][0]['content'] + "$$\n\\boxed{" + sample['reward_model']['ground_truth'] + "}$$"
+
+    def get_prompt_and_rejected(self, sample):
+        return sample["prompt"][0]['content'] + ""
 
 # Table #
 class HitabDataset(PromptRawDataset):
@@ -658,8 +723,8 @@ class HitabDataset(PromptRawDataset):
     This dataset is used for training models on table tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/table__hitab_4.3k.parquet"
         self.dataset_name_clean = "table_hitab-4.3k"
         
@@ -691,8 +756,8 @@ class MultiHierDataset(PromptRawDataset):
     This dataset is used for training models on table tasks.
     """
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
-        super().__init__(output_path, seed, local_rank, dataset_name)
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
         self.dataset_name = "/root/workspace/DeepSpeedExamples/raw_data/train/table__multihier_1.5k.parquet"
         self.dataset_name_clean = "table_multihier-1.5k"
         
@@ -716,3 +781,37 @@ class MultiHierDataset(PromptRawDataset):
 
     def get_prompt_and_rejected(self, sample):
         return sample["prompt"][0]['content'] + ""
+    
+
+# General #
+class HuggingFaceTB_SmoltalkDataset(PromptRawDataset):
+    """
+    HuggingFaceTB Smoltalk dataset for supervised fine-tuning.
+    This dataset is used for training models on general tasks.
+    """
+
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
+        self.dataset_name = "HuggingFaceTB/smoltalk"
+        self.dataset_name_clean = "HuggingFaceTB_smoltalk"
+        
+    def get_train_data(self):
+        return self.raw_datasets['train']
+
+    def get_eval_data(self):
+        return self.raw_datasets['test'].select(range(100))
+
+    def get_prompt(self, sample):
+        return sample["messages"][:-1]
+
+    def get_chosen(self, sample):
+        return sample["messages"][-1:]
+
+    def get_rejected(self, sample):
+        return ""
+
+    def get_prompt_and_chosen(self, sample):
+        return sample["messages"]
+
+    def get_prompt_and_rejected(self, sample):
+        return sample["messages"] + ""

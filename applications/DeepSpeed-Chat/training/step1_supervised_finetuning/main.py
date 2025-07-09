@@ -30,7 +30,7 @@ from dschat.utils.module.lora import convert_linear_layer_to_lora, convert_lora_
 from dschat.utils.model.model_utils import create_hf_model, causal_lm_model_to_fp32_loss
 from dschat.utils.perf import print_throughput
 
-import wandb
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -42,6 +42,12 @@ def parse_args():
                         help='Path to the training dataset. Accepted format:'
                         '1) a single data path, 2) multiple datasets in the'
                         'form: dataset1-path dataset2-path ...')
+    parser.add_argument('--data_name',
+                        nargs='*',
+                        default=['Dahoas/rm-static'],
+                        help='Name of the datasets. This is used to create the'
+                        ' HF dataset config files. if not HF dataset, write'
+                        ' None.')
     parser.add_argument('--data_split',
                         type=str,
                         default='2,4,4',
@@ -223,6 +229,7 @@ def main():
         # torch.distributed.init_process_group(backend='nccl')
         deepspeed.init_distributed()
         if dist.get_rank() == 0:
+            import wandb
             wandb.init(project=os.environ.get("WANDB_PROJECT"), 
                        name=os.environ.get("WANDB_NAME"), 
                        notes=os.environ.get("WANDB_NOTES"))
@@ -277,6 +284,7 @@ def main():
     train_dataset, eval_dataset = create_prompt_dataset(
         args.local_rank,
         args.data_path,
+        args.data_name,
         args.data_split,
         args.data_output_path,
         train_phase,
@@ -300,6 +308,8 @@ def main():
                                  collate_fn=default_data_collator,
                                  sampler=eval_sampler,
                                  batch_size=args.per_device_eval_batch_size)
+    
+    print_rank_0(f"Sample data: {train_dataset[0]}", args.global_rank)
 
     def evaluation(model, eval_dataloader):
         model.eval()

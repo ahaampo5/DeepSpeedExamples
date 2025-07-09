@@ -4,6 +4,7 @@
 import os
 # DeepSpeed Team
 from datasets import load_dataset, load_from_disk, Dataset
+from huggingface_hub import HfApi
 from torch.utils.data import Subset
 import pandas as pd
 import re
@@ -13,13 +14,17 @@ import re
 # follow in order to have a unified API and unified data format.
 class PromptRawDataset(object):
 
-    def __init__(self, output_path, seed, local_rank, dataset_name):
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
         self.output_path = output_path
         self.seed = seed
         self.local_rank = local_rank
+        api = HfApi()
         if 'parquet' in dataset_name:
             df = pd.read_parquet(dataset_name)
             self.raw_datasets = Dataset.from_pandas(df, preserve_index=False)
+        elif api.dataset_info(dataset_name) is not None:
+            # If the dataset is in HuggingFace Hub, load it from there.
+            self.raw_datasets = load_dataset(dataset_name, subset_name) if subset_name else load_dataset(dataset_name)
         elif os.path.exists(dataset_name):
             self.raw_datasets = load_from_disk(dataset_name)
         elif not dataset_name == 'local/jsonfile':
@@ -61,7 +66,7 @@ class DahoasRmstaticDataset(PromptRawDataset):
         self.dataset_name_clean = "Dahoas_rm_static"
 
     def get_train_data(self):
-        return self.raw_datasets["train"]
+        return self.raw_datasets["train"].select(100)
 
     def get_eval_data(self):
         return self.raw_datasets["test"]

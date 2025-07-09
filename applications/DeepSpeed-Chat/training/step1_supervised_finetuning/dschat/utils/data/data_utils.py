@@ -16,9 +16,10 @@ import hashlib
 from itertools import chain
 from dschat.utils.data import raw_datasets, raw_datasets_en
 from deepspeed.accelerator import get_accelerator
+from dschat.utils.utils import print_rank_0
 
 
-def get_raw_dataset(dataset_name, output_path, seed, local_rank):
+def get_raw_dataset(dataset_name, subset_name, output_path, seed, local_rank):
 
     if "Dahoas/rm-static" in dataset_name:
         return raw_datasets.DahoasRmstaticDataset(output_path, seed,
@@ -117,6 +118,21 @@ def get_raw_dataset(dataset_name, output_path, seed, local_rank):
     elif "math_500.parquet" in dataset_name:
         return raw_datasets_en.Math500Dataset(output_path, seed, local_rank,
                                               dataset_name)
+    elif "codeio_3.7k.parquet" in dataset_name:
+        return raw_datasets_en.CodeioDataset(output_path, seed, local_rank,
+                                             dataset_name)
+    elif "web_3.6k.parquet" in dataset_name:
+        return raw_datasets_en.WebDataset(output_path, seed, local_rank,
+                                          dataset_name)
+    elif "hitab_4.3k.parquet" in dataset_name:
+        return raw_datasets_en.HitabDataset(output_path, seed, local_rank,
+                                           dataset_name)
+    elif "multihier_1.5k.parquet" in dataset_name:
+        return raw_datasets_en.MultiHierDataset(output_path, seed, local_rank,
+                                                dataset_name)
+    # General
+    elif "HuggingFaceTB/smoltalk" in dataset_name:
+        return raw_datasets_en.HuggingFaceTB_SmoltalkDataset(output_path, seed, local_rank, dataset_name, subset_name)
     else:
         raise RuntimeError(
             f"We do not have configs for dataset {dataset_name}, but you can add it by yourself in raw_datasets.py."
@@ -217,17 +233,35 @@ def create_dataset_split(current_dataset, raw_dataset, train_phase, tokenizer,
             chosen_sentence = raw_dataset.get_prompt_and_chosen(
                 tmp_data)  # the accept response
             if chosen_sentence is not None:
-                chosen_sentence += end_of_conversation_token
-                chosen_token = tokenizer(chosen_sentence,
-                                         max_length=max_seq_len,
-                                         padding="max_length",
-                                         truncation=True,
-                                         return_tensors="pt")
-                chosen_token["input_ids"] = chosen_token["input_ids"].squeeze(
-                    0)
-                chosen_token["attention_mask"] = chosen_token[
-                    "attention_mask"].squeeze(0)
-                chosen_dataset.append(chosen_token)
+                if isinstance(chosen_sentence, str):
+                    chosen_sentence += end_of_conversation_token
+                    chosen_token = tokenizer(chosen_sentence,
+                                            max_length=max_seq_len,
+                                            padding="max_length",
+                                            truncation=True,
+                                            return_tensors="pt")
+                    chosen_token["input_ids"] = chosen_token["input_ids"].squeeze(
+                        0)
+                    chosen_token["attention_mask"] = chosen_token[
+                        "attention_mask"].squeeze(0)
+                    chosen_dataset.append(chosen_token)
+                elif isinstance(chosen_sentence, list):
+                    # sentence += end_of_conversation_token
+                    chosen_token = tokenizer.apply_chat_template(chosen_sentence,
+                                                max_length=max_seq_len,
+                                                padding="max_length",
+                                                truncation=True,
+                                                tokenize=True,
+                                                add_generation_prompt=True,
+                                                return_attention_mask=True,
+                                                return_dict=True,
+                                                return_tensors="pt")
+                    # print_rank_0(chosen_token)
+                    chosen_token["input_ids"] = chosen_token[
+                        "input_ids"].squeeze(0)
+                    chosen_token["attention_mask"] = chosen_token[
+                        "attention_mask"].squeeze(0)
+                    chosen_dataset.append(chosen_token)
         print(
             f'Creating dataset {raw_dataset.dataset_name_clean} for {train_phase=} size={len(chosen_dataset)}'
         )
@@ -279,11 +313,12 @@ def create_dataset_split(current_dataset, raw_dataset, train_phase, tokenizer,
                          tokenizer.pad_token_id, train_phase)
 
 
-def create_dataset(local_rank, dataset_name, data_split, output_path,
+def create_dataset(local_rank, dataset_name, subset_name, data_split, output_path,
                    train_phase, seed, tokenizer, end_of_conversation_token,
                    max_seq_len, rebuild):
-    raw_dataset = get_raw_dataset(dataset_name, output_path, seed, local_rank)
+    raw_dataset = get_raw_dataset(dataset_name, subset_name, output_path, seed, local_rank)
     train_dataset = raw_dataset.get_train_data()
+    print_rank_0(f"Sample data: {train_dataset[0]}", local_rank)
     train_index = get_raw_dataset_split_index(local_rank, output_path,
                                               raw_dataset.dataset_name_clean,
                                               seed, "train", data_split,
@@ -310,6 +345,7 @@ def create_dataset(local_rank, dataset_name, data_split, output_path,
 
 def create_prompt_dataset(local_rank,
                           data_path,
+                          subset_name,
                           data_split,
                           output_path,
                           train_phase,
@@ -344,6 +380,7 @@ def create_prompt_dataset(local_rank,
             train_dataset, eval_dataset = create_dataset(
                 local_rank,
                 data_path[0],
+                subset_name[0],
                 data_split,
                 output_path,
                 train_phase,
@@ -361,6 +398,7 @@ def create_prompt_dataset(local_rank,
                 train_dataset, eval_dataset = create_dataset(
                     local_rank,
                     d_path,
+                    subset_name,
                     data_split,
                     output_path,
                     train_phase,
