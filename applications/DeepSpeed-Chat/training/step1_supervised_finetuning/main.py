@@ -30,7 +30,7 @@ from dschat.utils.module.lora import convert_linear_layer_to_lora, convert_lora_
 from dschat.utils.model.model_utils import create_hf_model, causal_lm_model_to_fp32_loss
 from dschat.utils.perf import print_throughput
 
-
+import wandb
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -39,12 +39,14 @@ def parse_args():
     parser.add_argument('--data_path',
                         nargs='*',
                         default=['Dahoas/rm-static'],
+                        type=str,
                         help='Path to the training dataset. Accepted format:'
                         '1) a single data path, 2) multiple datasets in the'
                         'form: dataset1-path dataset2-path ...')
     parser.add_argument('--data_name',
                         nargs='*',
-                        default=['Dahoas/rm-static'],
+                        default=['default'],
+                        type=str,
                         help='Name of the datasets. This is used to create the'
                         ' HF dataset config files. if not HF dataset, write'
                         ' None.')
@@ -229,7 +231,6 @@ def main():
         # torch.distributed.init_process_group(backend='nccl')
         deepspeed.init_distributed()
         if dist.get_rank() == 0:
-            import wandb
             wandb.init(project=os.environ.get("WANDB_PROJECT"), 
                        name=os.environ.get("WANDB_NAME"), 
                        notes=os.environ.get("WANDB_NOTES"))
