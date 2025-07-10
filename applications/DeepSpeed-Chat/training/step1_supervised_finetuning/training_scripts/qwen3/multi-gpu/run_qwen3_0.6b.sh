@@ -13,13 +13,13 @@ if [ "$ZERO_STAGE" = "" ]; then
 fi
 mkdir -p $OUTPUT
 
-BATCH_SIZE=6
+BATCH_SIZE=1
 ACCUMULATION_STEPS=2
-MAX_LENGTH=4096
+MAX_LENGTH=16384
 NUM_GPUS=4
 TARGET=code_logic_math_simulation_stem_table
 
-export CUDA_VISIBLE_DEVICES=4,5,6,7
+export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 export WANDB_PROJECT="foundationModel"
 export WANDB_NAME="0.6B_b_$BATCH_SIZE*$ACCUMULATION_STEPS*$NUM_GPUS-$MAX_LENGTH" # 6*2=12
 export WANDB_NOTES="Smaller learning rate, more regularization."
@@ -82,9 +82,9 @@ if [[ "$DATA_PATH" == "" ]]; then
   exit 1
 fi
 deepspeed main.py \
-   --data_path \
-     $DATA_PATH \
-   --data_split 2,4,4 \
+   --data_path mncai/foundation_model_smoltalk_ko_translate mncai/foundation_model_smoltalk_zh_translate HuggingFaceTB/smoltalk \
+   --data_name default default all \
+   --data_split 8,1,1 \
    --model_name_or_path Qwen/Qwen3-0.6B \
    --per_device_train_batch_size $BATCH_SIZE \
    --per_device_eval_batch_size $BATCH_SIZE \

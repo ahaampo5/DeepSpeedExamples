@@ -59,7 +59,7 @@ class HuggingFaceTB_SmoltalkDataset_KO(PromptRawDataset):
         return self.raw_datasets["train"]
 
     def get_eval_data(self):
-        return self.raw_datasets["train"].select(range(0))
+        return self.raw_datasets["train"].select(range(10))
 
     def get_prompt(self, sample):
         return sample["messages"][:-1]
