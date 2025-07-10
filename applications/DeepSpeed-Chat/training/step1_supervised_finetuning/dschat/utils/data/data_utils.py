@@ -133,9 +133,9 @@ def get_raw_dataset(dataset_name, subset_name, output_path, seed, local_rank):
     # General
     elif "HuggingFaceTB/smoltalk" in dataset_name:
         return raw_datasets_en.HuggingFaceTB_SmoltalkDataset(output_path, seed, local_rank, dataset_name, subset_name)
-    elif "HuggingFaceTB/smoltalk_ko_translate" in dataset_name:
+    elif "mncai/foundation_model_smoltalk_ko_translate" in dataset_name:
         return raw_datasets_ko.HuggingFaceTB_SmoltalkDataset_KO(output_path, seed, local_rank, dataset_name)
-    elif "HuggingFaceTB/smoltalk_zh_translate" in dataset_name:
+    elif "mncai/foundation_model_smoltalk_zh_translate" in dataset_name:
         return raw_datasets_zh.HuggingFaceTB_SmoltalkDataset_ZH(output_path, seed, local_rank, dataset_name)
     else:
         raise RuntimeError(

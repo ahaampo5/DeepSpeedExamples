@@ -3,8 +3,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # DeepSpeed Team
-import os
+from dotenv import load_dotenv
+import os 
 import argparse
+load_dotenv()
 import math
 
 import torch
