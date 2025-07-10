@@ -399,11 +399,11 @@ def create_prompt_dataset(local_rank,
             eval_datasets = []
             train_size = 0
             eval_size = 0
-            for d_path in data_path:
+            for d_path, s_name in zip(data_path, subset_name):
                 train_dataset, eval_dataset = create_dataset(
                     local_rank,
                     d_path,
-                    subset_name,
+                    s_name,
                     data_split,
                     output_path,
                     train_phase,
