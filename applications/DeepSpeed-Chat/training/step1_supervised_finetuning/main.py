@@ -8,6 +8,7 @@ import os
 import argparse
 load_dotenv()
 import math
+import shutil
 
 import torch
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
@@ -59,6 +60,12 @@ def parse_args():
                         'phase 1, 2, and 3 data. For example the split `6,2,2`'
                         'will use 60%% of data for phase 1, 20%% for phase 2'
                         'and 20%% for phase 3.')
+    parser.add_argument('--save_steps',
+                        type=int,
+                        default=1000,
+                        help='Save the model every X steps. This is useful for'
+                        'long training runs, so that you can resume training'
+                        'from the last checkpoint.')
     parser.add_argument(
         '--sft_only_data_path',
         nargs='*',
@@ -401,7 +408,37 @@ def main():
             if torch.distributed.get_rank() == 0:
                 print_throughput(model.model, args, end - start,
                                  args.global_rank)
+                
+            # save in the middle of training (save maximum 3 checkpoints)
+            if args.output_dir is not None and step % args.save_steps == 0 and step > 0:
+                print_rank_0('saving the model ...', args.global_rank)
+                model = convert_lora_to_linear_layer(model)
 
+                if args.global_rank == 0:
+                    save_hf_format(model, tokenizer, args)
+
+                if args.zero_stage == 3:
+                    # For zero stage 3, each gpu only has a part of the model, so we need a special save function
+                    # if checkpoint directory is exceeds 3, delete the oldest one
+                    
+                    save_zero_three_model(model,
+                                            args.global_rank,
+                                            args.output_dir + f"/checkpoint-{epoch+1}-{step}",
+                                            zero_stage=args.zero_stage)
+                    if args.global_rank == 0 and os.path.exists(args.output_dir):
+                        checkpoints = sorted(
+                            [d for d in os.listdir(args.output_dir)
+                             if d.startswith('checkpoint-')],
+                            key=lambda x: int(x.split('-')[1]))
+                        if len(checkpoints) >= 3:
+                            oldest_checkpoint = checkpoints[0]
+                            oldest_checkpoint_path = os.path.join(
+                                args.output_dir, oldest_checkpoint)
+                            print_rank_0(
+                                f"Deleting oldest checkpoint: {oldest_checkpoint_path}",
+                                args.global_rank)
+                            if os.path.exists(oldest_checkpoint_path):
+                                shutil.rmtree(oldest_checkpoint_path)
         # Evaluate perplexity on the validation set.
         print_rank_0(
             f"***** Evaluating perplexity, Epoch {epoch+1}/{args.num_train_epochs} *****",

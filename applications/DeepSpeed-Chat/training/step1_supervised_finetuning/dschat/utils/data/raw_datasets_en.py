@@ -815,3 +815,36 @@ class HuggingFaceTB_SmoltalkDataset(PromptRawDataset):
 
     def get_prompt_and_rejected(self, sample):
         return sample["messages"] + ""
+
+
+class BaseConversationDataset(PromptRawDataset):
+    """
+    Base Conversation dataset for supervised fine-tuning.
+    This dataset is used for training models on conversation tasks.
+    """
+
+    def __init__(self, output_path, seed, local_rank, dataset_name, subset_name=None):
+        super().__init__(output_path, seed, local_rank, dataset_name, subset_name)
+        self.dataset_name = dataset_name
+        self.dataset_name_clean = dataset_name.replace("/", "_").replace("-", "_").replace(".", "_")
+        
+    def get_train_data(self):
+        return self.raw_datasets['train'].select(range(min([1000, len(self.raw_datasets['train'])])))
+
+    def get_eval_data(self):
+        return self.raw_datasets['train'].select(range(100))
+
+    def get_prompt(self, sample):
+        return sample["messages"][:-1]
+
+    def get_chosen(self, sample):
+        return sample["messages"][-1:]
+
+    def get_rejected(self, sample):
+        return ""
+
+    def get_prompt_and_chosen(self, sample):
+        return sample["messages"]
+
+    def get_prompt_and_rejected(self, sample):
+        return sample["messages"] + ""

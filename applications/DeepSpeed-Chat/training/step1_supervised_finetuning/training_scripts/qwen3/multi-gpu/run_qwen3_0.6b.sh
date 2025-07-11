@@ -14,7 +14,7 @@ fi
 mkdir -p $OUTPUT
 
 BATCH_SIZE=1
-ACCUMULATION_STEPS=2
+ACCUMULATION_STEPS=8
 MAX_LENGTH=16384
 NUM_GPUS=4
 TARGET=code_logic_math_simulation_stem_table
@@ -82,19 +82,26 @@ if [[ "$DATA_PATH" == "" ]]; then
   exit 1
 fi
 deepspeed main.py \
-   --data_path mncai/foundation_model_smoltalk_ko_translate mncai/foundation_model_smoltalk_zh_translate HuggingFaceTB/smoltalk \
-   --data_name default default all \
-   --data_split 8,1,1 \
+   --data_path \
+    mncai/math_sample_ko \
+    mncai/math_sample_en \
+    mncai/intellect_code_ko \
+    mncai/intellect_code_en \
+    mncai/foundation_model_smoltalk_en_15K_seed41 \
+    mncai/foundation_model_smoltalk_ko_translate_15K_seed42 \
+   --data_name default default default default default default \
+   --data_split 1,0,0 \
    --model_name_or_path Qwen/Qwen3-0.6B \
    --per_device_train_batch_size $BATCH_SIZE \
    --per_device_eval_batch_size $BATCH_SIZE \
+   --save_steps 10 \
    --max_seq_len $MAX_LENGTH \
    --learning_rate 9.65e-6 \
    --weight_decay 0. \
    --num_train_epochs 1  \
    --gradient_accumulation_steps $ACCUMULATION_STEPS \
    --lr_scheduler_type cosine \
-   --num_warmup_steps 0 \
+   --num_warmup_steps 500 \
    --seed 1234 \
    --gradient_checkpointing \
    --zero_stage $ZERO_STAGE \
