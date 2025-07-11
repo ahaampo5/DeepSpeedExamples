@@ -27,7 +27,7 @@ class PromptRawDataset(object):
             print('HF dataset found, loading from HuggingFace Hub...')
             self.raw_datasets = load_dataset(dataset_name, subset_name) if subset_name else load_dataset(dataset_name)
             # self.raw_datasets의 messages, prompt_mnc 빼고 나머지 컬럼 다 삭제해줘
-            self.raw_datasets['train'] = self.raw_datasets['train'].map(lambda x: {'messages': x['messages'], "prompt_mnc": x['prompt_mnc']}, remove_columns=[col for col in self.raw_datasets['train'].column_names if col != 'messages' and col != 'prompt_mnc'])
+            self.raw_datasets['train'] = self.raw_datasets['train'].map(lambda x: {'chosen': x['messages'][-1]['content'], "prompt_mnc": x['prompt_mnc']}, remove_columns=[col for col in self.raw_datasets['train'].column_names if col != 'prompt_mnc' and col != 'chosen'])
 
         elif os.path.exists(dataset_name):
             self.raw_datasets = load_from_disk(dataset_name)

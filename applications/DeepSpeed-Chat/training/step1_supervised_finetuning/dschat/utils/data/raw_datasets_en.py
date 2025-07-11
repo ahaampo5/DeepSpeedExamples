@@ -838,13 +838,13 @@ class BaseConversationDataset(PromptRawDataset):
         return sample["prompt_mnc"]
 
     def get_chosen(self, sample):
-        return sample["messages"][-1]['content']
+        return sample["chosen"]
 
     def get_rejected(self, sample):
         return ""
 
     def get_prompt_and_chosen(self, sample):
-        return sample["prompt_mnc"] + sample["messages"][-1]['content']
+        return sample["prompt_mnc"] + sample["chosen"]
 
     def get_prompt_and_rejected(self, sample):
         return sample["prompt_mnc"] + ""
@@ -867,13 +867,13 @@ class HuggingFaceTB_SmoltalkDataset_EN(PromptRawDataset):
         return sample["prompt_mnc"]
 
     def get_chosen(self, sample):
-        return sample["messages"][-1]['content']
+        return sample["chosen"]
 
     def get_rejected(self, sample):
         return ""
 
     def get_prompt_and_chosen(self, sample):
-        return sample["prompt_mnc"] + sample["messages"][-1]['content']
+        return sample["prompt_mnc"] + sample["chosen"]
 
     def get_prompt_and_rejected(self, sample):
-        return sample["messages"] + ""
+        return sample["prompt_mnc"] + ""
