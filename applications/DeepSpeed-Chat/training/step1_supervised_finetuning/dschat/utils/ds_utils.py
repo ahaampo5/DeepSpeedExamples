@@ -38,7 +38,7 @@ def get_train_ds_config(offload,
             "device": device,
         },
         "offload_optimizer": {
-            "device": "cuda"
+            "device": "none"
         },
         "stage3_param_persistence_threshold": 1e4,
         "stage3_max_live_parameters": 3e7,
