@@ -25,17 +25,17 @@ class HuggingFaceTB_SmoltalkDataset_KO(PromptRawDataset):
         return self.raw_datasets["train"].select(range(10))
 
     def get_prompt(self, sample):
-        return sample["messages"][:-1]
+        return sample["prompt_mnc"]
 
     def get_chosen(self, sample):
-        return sample["messages"][-1:]
+        return sample["messages"][-1]['content']
 
     def get_rejected(self, sample):
         return ""
 
     def get_prompt_and_chosen(self, sample):
-        return sample["messages"]
+        return sample["prompt_mnc"] + sample["messages"][-1]['content']
 
     def get_prompt_and_rejected(self, sample):
-        return sample["messages"] + ""
+        return sample["prompt_mnc"] + ""
 

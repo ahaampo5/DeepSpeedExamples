@@ -257,14 +257,16 @@ def create_dataset_split(current_dataset, raw_dataset, train_phase, tokenizer,
                     chosen_dataset.append(chosen_token)
                 elif isinstance(chosen_sentence, list):
                     # sentence += end_of_conversation_token
-                    chosen_token = tokenizer.apply_chat_template(chosen_sentence,
+                    chosen_token = tokenizer.apply_chat_template(
+                                                chosen_sentence[:-1],
+                                                chosen_sentence[-1]['content'],
                                                 max_length=max_seq_len,
                                                 padding="max_length",
                                                 truncation=True,
                                                 tokenize=True,
                                                 add_generation_prompt=False,
                                                 return_attention_mask=True,
-                                                return_dict=True,
+                                                return_dict=False,
                                                 return_tensors="pt")
                     # print_rank_0(chosen_token)
                     chosen_token["input_ids"] = chosen_token[

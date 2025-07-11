@@ -24,13 +24,19 @@ if [ "$OUTPUT" = "" ]; then
     OUTPUT=./output_step1_qwen3_0.6b
 fi
 if [ "$ZERO_STAGE" = "" ]; then
-    ZERO_STAGE=1
+    ZERO_STAGE=3
 fi
 mkdir -p $OUTPUT
 
 deepspeed --hostfile=hostfile --num_nodes 2 main.py \
-   --data_path mncai/foundation_model_smoltalk_ko_translate mncai/foundation_model_smoltalk_zh_translate HuggingFaceTB/smoltalk \
-   --data_name default default all \
+   --data_path \
+    mncai/math_sample_ko \
+    mncai/math_sample_en \
+    mncai/intellect_code_ko \
+    mncai/intellect_code_en \
+    mncai/foundation_model_smoltalk_en_15K_seed41 \
+    mncai/foundation_model_smoltalk_ko_translate_15K_seed42 \
+   --data_name default default default default default default \
    --data_split 1,0,0 \
    --model_name_or_path Qwen/Qwen3-0.6B \
    --per_device_train_batch_size $BATCH_SIZE \
@@ -47,6 +53,7 @@ deepspeed --hostfile=hostfile --num_nodes 2 main.py \
    --zero_stage $ZERO_STAGE \
    --deepspeed \
    --output_dir $OUTPUT \
+   --offload \
    --dtype bf16 \
    > $OUTPUT/training.log
 

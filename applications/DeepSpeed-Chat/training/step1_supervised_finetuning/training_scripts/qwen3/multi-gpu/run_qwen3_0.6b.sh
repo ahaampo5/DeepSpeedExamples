@@ -15,7 +15,7 @@ mkdir -p $OUTPUT
 
 BATCH_SIZE=1
 ACCUMULATION_STEPS=8
-MAX_LENGTH=16384
+MAX_LENGTH=8192
 NUM_GPUS=4
 TARGET=code_logic_math_simulation_stem_table
 
@@ -106,5 +106,6 @@ deepspeed main.py \
    --gradient_checkpointing \
    --zero_stage $ZERO_STAGE \
    --deepspeed \
+   --dtype bf16 \
    --output_dir $OUTPUT \
    > $OUTPUT/training.log

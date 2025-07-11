@@ -34,9 +34,9 @@ def get_train_ds_config(offload,
     zero_opt_dict = {
         "stage": stage,
         "overlap_comm": True,
-        "offload_param": {
-            "device": device
-        },
+        # "offload_param": {
+        #     "device": device
+        # },
         # "offload_optimizer": {
         #     "device": device
         # },

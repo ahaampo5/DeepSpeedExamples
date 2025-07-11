@@ -321,6 +321,8 @@ def main():
                                  batch_size=args.per_device_eval_batch_size)
     
     print_rank_0(f"Sample data: {train_dataset[0]}", args.global_rank)
+    if args.local_rank == 0:
+        print(train_dataset.__getitem__(0))  # Preload the first item to avoid issues with distributed training
 
     def evaluation(model, eval_dataloader):
         model.eval()
