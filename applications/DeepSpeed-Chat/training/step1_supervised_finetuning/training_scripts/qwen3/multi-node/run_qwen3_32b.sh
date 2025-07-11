@@ -9,10 +9,10 @@ export NCCL_DEBUG_SUBSYS=ALL
 export NCCL_TIMEOUT=6000
 
 BATCH_SIZE=1
-ACCUMULATION_STEPS=2
-MAX_LENGTH=4096
+ACCUMULATION_STEPS=16
+MAX_LENGTH=16384
 NUM_GPUS=16
-TARGET=code_logic_math_stem_table
+TARGET=lets_go
 
 export WANDB_PROJECT="foundationModel"
 export WANDB_NAME="0.6B_b_$BATCH_SIZE*$ACCUMULATION_STEPS*$NUM_GPUS-$MAX_LENGTH-$TARGET" # 6*2=12
@@ -49,6 +49,7 @@ deepspeed --hostfile=hostfile --num_nodes 2 main.py \
    --lr_scheduler_type cosine \
    --num_warmup_steps 500 \
    --seed 1234 \
+   --save_steps 700 \
    --gradient_checkpointing \
    --zero_stage $ZERO_STAGE \
    --deepspeed \
