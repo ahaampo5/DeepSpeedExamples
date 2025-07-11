@@ -832,7 +832,7 @@ class BaseConversationDataset(PromptRawDataset):
         return self.raw_datasets['train'].select(range(min([1000, len(self.raw_datasets['train'])])))
 
     def get_eval_data(self):
-        return self.raw_datasets['train'].select(range(100))
+        return self.raw_datasets['train'].select(range(10))
 
     def get_prompt(self, sample):
         return sample["prompt_mnc"]
