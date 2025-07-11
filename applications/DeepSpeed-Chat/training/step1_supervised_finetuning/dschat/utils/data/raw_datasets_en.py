@@ -848,3 +848,32 @@ class BaseConversationDataset(PromptRawDataset):
 
     def get_prompt_and_rejected(self, sample):
         return sample["messages"] + ""
+    
+
+class HuggingFaceTB_SmoltalkDataset_EN(PromptRawDataset):
+
+    def __init__(self, output_path, seed, local_rank, dataset_name):
+        super().__init__(output_path, seed, local_rank, dataset_name)
+        self.dataset_name = "mncai/foundation_model_smoltalk_en"
+        self.dataset_name_clean = "HuggingFaceTB_SmoltalkDataset_EN"
+
+    def get_train_data(self):
+        return self.raw_datasets["train"]
+
+    def get_eval_data(self):
+        return self.raw_datasets["train"].select(range(10))
+
+    def get_prompt(self, sample):
+        return sample["messages"][:-1]
+
+    def get_chosen(self, sample):
+        return sample["messages"][-1:]
+
+    def get_rejected(self, sample):
+        return ""
+
+    def get_prompt_and_chosen(self, sample):
+        return sample["messages"]
+
+    def get_prompt_and_rejected(self, sample):
+        return sample["messages"] + ""

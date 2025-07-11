@@ -134,9 +134,9 @@ def get_raw_dataset(dataset_name, subset_name, output_path, seed, local_rank):
     elif "HuggingFaceTB/smoltalk" in dataset_name:
         return raw_datasets_en.HuggingFaceTB_SmoltalkDataset(output_path, seed, local_rank, dataset_name, subset_name)
     elif "mncai/foundation_model_smoltalk_en_15K_seed41" in dataset_name:
-        return raw_datasets_ko.HuggingFaceTB_SmoltalkDataset_KO(output_path, seed, local_rank, dataset_name)
+        return raw_datasets_en.HuggingFaceTB_SmoltalkDataset_EN(output_path, seed, local_rank, dataset_name)
     elif "mncai/foundation_model_smoltalk_ko_translate_15K_seed42" in dataset_name:
-        return raw_datasets_zh.HuggingFaceTB_SmoltalkDataset_ZH(output_path, seed, local_rank, dataset_name)
+        return raw_datasets_ko.HuggingFaceTB_SmoltalkDataset_KO(output_path, seed, local_rank, dataset_name)
     # Last
     elif dataset_name in [
         "mncai/math_sample_ko", "mncai/math_sample_en", "mncai/intellect_code_ko", "mncai/intellect_code_en"
